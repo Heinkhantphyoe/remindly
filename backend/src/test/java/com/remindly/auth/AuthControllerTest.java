@@ -31,6 +31,9 @@ class AuthControllerTest {
     @MockBean
     private LoginService loginService;
 
+    @MockBean
+    private JwtTokenService jwtTokenService;
+
     @Test
     void registersThroughPublicEndpoint() throws Exception {
         UserResponse response = new UserResponse(
