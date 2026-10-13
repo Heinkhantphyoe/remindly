@@ -1,0 +1,69 @@
+import axios, { type InternalAxiosRequestConfig } from 'axios';
+import type { LoginResponse } from './types';
+import { tokenStore } from './tokenStore';
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL ?? '/api',
+  headers: { 'Content-Type': 'application/json' },
+});
+
+let refreshPromise: Promise<string | null> | null = null;
+
+api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+  const token = tokenStore.getAccessToken();
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+
+api.interceptors.response.use(undefined, async (error) => {
+  const originalRequest = error.config as (InternalAxiosRequestConfig & { _retry?: boolean }) | undefined;
+  const isAuthEndpoint = originalRequest?.url?.includes('/auth/');
+
+  if (error.response?.status !== 401 || !originalRequest || originalRequest._retry || isAuthEndpoint) {
+    return Promise.reject(error);
+  }
+
+  originalRequest._retry = true;
+  if (!refreshPromise) refreshPromise = refreshAccessToken().finally(() => { refreshPromise = null; });
+  const newAccessToken = await refreshPromise;
+  if (!newAccessToken) {
+    tokenStore.clear();
+    return Promise.reject(error);
+  }
+
+  originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+  return api(originalRequest);
+});
+
+async function refreshAccessToken(): Promise<string | null> {
+  const refreshToken = tokenStore.getRefreshToken();
+  if (!refreshToken) return null;
+  try {
+    const response = await axios.post<LoginResponse>(
+      `${import.meta.env.VITE_API_BASE_URL ?? '/api'}/auth/refresh`,
+      { refreshToken },
+    );
+    tokenStore.setTokens(response.data.accessToken, response.data.refreshToken);
+    return response.data.accessToken;
+  } catch {
+    return null;
+  }
+}
+
+export const authApi = {
+  login: (request: { email: string; password: string }) => api.post<LoginResponse>('/auth/login', request),
+  register: (request: { email: string; password: string; displayName: string; timezone: string }) => api.post('/auth/register', request),
+  logout: (refreshToken: string) => api.post('/auth/logout', { refreshToken }),
+};
+
+export const userApi = { me: () => api.get('/users/me') };
+
+export function getApiErrorMessage(error: unknown, fallback = 'Something went wrong. Please try again.') {
+  if (axios.isAxiosError(error)) {
+    const detail = error.response?.data?.detail;
+    if (typeof detail === 'string') return detail;
+  }
+  return fallback;
+}
+
+export default api;
