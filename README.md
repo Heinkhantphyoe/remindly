@@ -2,9 +2,9 @@
 
 Remindly is a production-style event reminder service built incrementally with a React frontend and Spring Boot backend.
 
-## Current progress: Step 9 — frontend notifications
+## Current progress: Step 10 — final verification and deployment preparation
 
-The project foundation, PostgreSQL schema, authentication, user profile endpoints, reminder CRUD API, notification scheduler, notification API, frontend reminder experience, and notification UI are in place. Final verification and deployment preparation remain.
+The project foundation, PostgreSQL schema, authentication, user profile endpoints, reminder CRUD API, notification scheduler, notification API, frontend reminder experience, and notification UI are in place. Production build checks and local deployment documentation are complete.
 
 ## Requirements
 
@@ -82,4 +82,30 @@ docker compose up -d postgres
 Flyway applies database migrations automatically when the backend starts. The first migration creates the users, refresh tokens, reminders, and notifications tables.
 
 If using the existing PostgreSQL installation, create the configured database and user before starting the backend. Alternatively, start the Compose database service with the command above.
+
+## Verification
+
+Run the backend checks:
+
+```powershell
+cd backend
+mvn test
+mvn -DskipTests package
+```
+
+Run the frontend checks:
+
+```powershell
+cd frontend
+npm install
+npm run build
+```
+
+Validate the local Compose configuration from the repository root:
+
+```powershell
+docker compose config
+```
+
+For deployment, set `DATABASE_URL`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`, and `JWT_SECRET` through environment variables instead of using local development defaults.
 
