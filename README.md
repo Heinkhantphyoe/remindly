@@ -2,9 +2,9 @@
 
 Remindly is a production-style event reminder service built incrementally with a React frontend and Spring Boot backend.
 
-## Current progress: Step 2 — database foundation
+## Current progress: Step 4 — reminder domain and CRUD
 
-The project foundation and initial PostgreSQL schema are in place. Authentication, reminder endpoints, and scheduling will be added in later steps.
+The project foundation, PostgreSQL schema, authentication, user profile endpoints, and reminder CRUD API are in place. Notification scheduling and the frontend reminder experience are planned for later steps.
 
 ## Requirements
 
@@ -32,6 +32,23 @@ mvn spring-boot:run
 The backend listens on `http://localhost:8080`.
 
 Health check: `http://localhost:8080/actuator/health`
+
+Reminder endpoints require a JWT access token:
+
+```text
+POST   /api/reminders
+GET    /api/reminders
+GET    /api/reminders/{id}
+PUT    /api/reminders/{id}
+PATCH  /api/reminders/{id}/completion
+DELETE /api/reminders/{id}
+```
+
+The list endpoint supports `completed`, `category`, `dueFrom`, `dueTo`, `page`, `size`, and `sort` query parameters. For example:
+
+```text
+GET /api/reminders?completed=false&sort=dueAt,asc&page=0&size=20
+```
 
 ## Run the frontend
 
