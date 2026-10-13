@@ -61,4 +61,10 @@ public class Notification {
     public Instant getScheduledFor() { return scheduledFor; }
     public Instant getReadAt() { return readAt; }
     public Instant getCreatedAt() { return createdAt; }
+
+    public void markRead() {
+        if (readAt == null) {
+            readAt = Instant.now();
+        }
+    }
 }

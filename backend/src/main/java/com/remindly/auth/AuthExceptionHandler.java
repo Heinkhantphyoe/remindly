@@ -3,6 +3,7 @@ package com.remindly.auth;
 import com.remindly.user.UserNotFoundException;
 import com.remindly.reminder.InvalidReminderRangeException;
 import com.remindly.reminder.ReminderNotFoundException;
+import com.remindly.notification.NotificationNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -57,6 +58,13 @@ public class AuthExceptionHandler {
     ProblemDetail handleInvalidReminderRange(InvalidReminderRangeException exception) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
         problem.setTitle("Invalid reminder date range");
+        return problem;
+    }
+
+    @ExceptionHandler(NotificationNotFoundException.class)
+    ProblemDetail handleNotificationNotFound(NotificationNotFoundException exception) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
+        problem.setTitle("Notification not found");
         return problem;
     }
 }
