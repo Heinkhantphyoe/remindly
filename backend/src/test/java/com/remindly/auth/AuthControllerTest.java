@@ -78,7 +78,7 @@ class AuthControllerTest {
     @Test
     void logsInThroughPublicEndpoint() throws Exception {
         when(loginService.login(any(LoginRequest.class))).thenReturn(
-                new LoginResponse("access-token", 900, new UserResponse(
+                new LoginResponse("access-token", "refresh-token", 900, new UserResponse(
                         UUID.randomUUID(), "user@example.com", "User", "UTC", Instant.now()
                 ))
         );

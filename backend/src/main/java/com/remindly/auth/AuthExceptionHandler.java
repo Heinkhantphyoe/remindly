@@ -28,5 +28,12 @@ public class AuthExceptionHandler {
         problem.setTitle("Authentication failed");
         return problem;
     }
+
+    @ExceptionHandler(InvalidRefreshTokenException.class)
+    ProblemDetail handleInvalidRefreshToken(InvalidRefreshTokenException exception) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, exception.getMessage());
+        problem.setTitle("Refresh failed");
+        return problem;
+    }
 }
 
