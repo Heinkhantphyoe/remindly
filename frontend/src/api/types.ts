@@ -53,3 +53,18 @@ export type ReminderPage = {
   number: number;
   size: number;
 };
+
+export type Notification = {
+  id: string;
+  reminderId: string;
+  notificationType: 'ADVANCE' | 'DUE';
+  scheduledFor: string;
+  readAt: string | null;
+  createdAt: string;
+};
+
+export type NotificationPage = {
+  content: Notification[];
+  totalPages: number;
+  totalElements: number;
+};

@@ -2,9 +2,9 @@
 
 Remindly is a production-style event reminder service built incrementally with a React frontend and Spring Boot backend.
 
-## Current progress: Step 8 — frontend reminder experience
+## Current progress: Step 9 — frontend notifications
 
-The project foundation, PostgreSQL schema, authentication, user profile endpoints, reminder CRUD API, notification scheduler, notification API, and frontend reminder experience are in place. The frontend notification experience and final verification are planned for later steps.
+The project foundation, PostgreSQL schema, authentication, user profile endpoints, reminder CRUD API, notification scheduler, notification API, frontend reminder experience, and notification UI are in place. Final verification and deployment preparation remain.
 
 ## Requirements
 

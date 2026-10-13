@@ -35,6 +35,25 @@ input:focus { border-color: #5576e1; box-shadow: 0 0 0 4px rgba(85, 118, 225, .1
 .brand-name { font-weight: 800; letter-spacing: -.03em; }
 .topbar-actions { display: flex; align-items: center; gap: 1rem; }
 .user-name { color: #68748a; font-size: .9rem; }
+.notification-wrap { position: relative; }
+.notification-button { position: relative; width: 34px; height: 34px; border: 0; border-radius: 9px; color: #53617a; background: #f3f6fb; }
+.bell-icon { font-size: 1.2rem; line-height: 1; }
+.unread-badge { position: absolute; top: -4px; right: -4px; min-width: 17px; padding: 2px 4px; border-radius: 100px; color: white; background: #d75d5d; font-size: .62rem; font-weight: 800; }
+.notification-panel { position: absolute; z-index: 5; top: 46px; right: 0; width: min(360px, calc(100vw - 2rem)); padding: 1rem; border: 1px solid #e1e7f0; border-radius: 14px; background: white; box-shadow: 0 18px 45px rgba(35, 54, 92, .16); }
+.notification-heading { display: flex; justify-content: space-between; align-items: start; gap: 1rem; padding: .35rem .35rem .85rem; border-bottom: 1px solid #edf0f5; }
+.notification-heading h3 { margin: .35rem 0 0; font-size: 1.05rem; }
+.notification-heading button { border: 0; color: #3159d8; background: transparent; font-size: .75rem; font-weight: 700; }
+.notification-list { display: grid; max-height: 310px; overflow: auto; }
+.notification-item { display: flex; gap: .7rem; align-items: start; width: 100%; padding: .85rem .35rem; border: 0; border-bottom: 1px solid #f0f2f6; color: #25304a; text-align: left; background: white; }
+.notification-item:hover { background: #f8faff; }
+.notification-item strong, .notification-item small { display: block; }
+.notification-item strong { font-size: .82rem; }
+.notification-item small { margin-top: .2rem; color: #8993a5; font-size: .72rem; }
+.notification-item.read { opacity: .6; }
+.notification-dot { flex: 0 0 auto; width: 8px; height: 8px; margin-top: .3rem; border-radius: 50%; background: #3159d8; }
+.notification-dot.read { background: #c7cfdd; }
+.notification-state { padding: 1.3rem .35rem .5rem; color: #8993a5; font-size: .82rem; text-align: center; }
+.notification-state.error { color: #bd5656; }
 .content-area { max-width: 1180px; margin: 0 auto; padding: clamp(3rem, 8vw, 7rem) 1.5rem; }
 .welcome-panel { max-width: 800px; }
 .welcome-panel p { color: #68748a; font-size: 1.05rem; }
