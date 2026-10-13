@@ -2,8 +2,10 @@ import axios, { type InternalAxiosRequestConfig } from 'axios';
 import type { LoginResponse, ReminderInput, ReminderPage, Reminder, NotificationPage, Notification } from './types';
 import { tokenStore } from './tokenStore';
 
+const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? '/api').replace(/\/$/, '');
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL ?? '/api',
+  baseURL: apiBaseUrl,
   headers: { 'Content-Type': 'application/json' },
 });
 
@@ -40,7 +42,7 @@ async function refreshAccessToken(): Promise<string | null> {
   if (!refreshToken) return null;
   try {
     const response = await axios.post<LoginResponse>(
-      `${import.meta.env.VITE_API_BASE_URL ?? '/api'}/auth/refresh`,
+      `${apiBaseUrl}/auth/refresh`,
       { refreshToken },
     );
     tokenStore.setTokens(response.data.accessToken, response.data.refreshToken);

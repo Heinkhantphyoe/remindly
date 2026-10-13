@@ -31,6 +31,10 @@ security:
     secret: ${JWT_SECRET:remindly-local-development-secret-key-change-me}
     access-token-ttl-seconds: ${JWT_ACCESS_TOKEN_TTL_SECONDS:900}
 
+app:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
+
 notifications:
   scheduler:
     fixed-rate-ms: ${NOTIFICATION_SCHEDULER_FIXED_RATE_MS:60000}

@@ -15,6 +15,7 @@ import java.util.UUID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -94,6 +95,33 @@ class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessToken").value("access-token"))
                 .andExpect(jsonPath("$.expiresIn").value(900));
+    }
+
+    @Test
+    void allowsRefreshWithoutAnAccessToken() throws Exception {
+        when(loginService.refresh(any(RefreshTokenRequest.class))).thenReturn(
+                new LoginResponse("new-access-token", "new-refresh-token", 900, new UserResponse(
+                        UUID.randomUUID(), "user@example.com", "User", "UTC", Instant.now()
+                ))
+        );
+
+        mockMvc.perform(post("/api/auth/refresh")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"refreshToken":"refresh-token"}
+                                """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.accessToken").value("new-access-token"));
+    }
+
+    @Test
+    void allowsCorsPreflightForFrontend() throws Exception {
+        mockMvc.perform(options("/api/auth/refresh")
+                        .header("Origin", "http://localhost:5173")
+                        .header("Access-Control-Request-Method", "POST"))
+                .andExpect(status().isOk())
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.header()
+                        .string("Access-Control-Allow-Origin", "http://localhost:5173"));
     }
 }
 
