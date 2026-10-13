@@ -1,5 +1,6 @@
 package com.remindly.auth;
 
+import com.remindly.user.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,6 +34,13 @@ public class AuthExceptionHandler {
     ProblemDetail handleInvalidRefreshToken(InvalidRefreshTokenException exception) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, exception.getMessage());
         problem.setTitle("Refresh failed");
+        return problem;
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    ProblemDetail handleUserNotFound(UserNotFoundException exception) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, exception.getMessage());
+        problem.setTitle("Authentication failed");
         return problem;
     }
 }
