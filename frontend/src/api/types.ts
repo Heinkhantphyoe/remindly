@@ -24,3 +24,32 @@ export type LoginRequest = {
   email: string;
   password: string;
 };
+
+export type Reminder = {
+  id: string;
+  title: string;
+  description: string | null;
+  category: string | null;
+  dueAt: string;
+  advanceOffsetMinutes: number | null;
+  completed: boolean;
+  completedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type ReminderInput = {
+  title: string;
+  description?: string;
+  category?: string;
+  dueAt: string;
+  advanceOffsetMinutes?: number;
+};
+
+export type ReminderPage = {
+  content: Reminder[];
+  totalPages: number;
+  totalElements: number;
+  number: number;
+  size: number;
+};

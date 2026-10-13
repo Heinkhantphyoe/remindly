@@ -1,5 +1,5 @@
 import axios, { type InternalAxiosRequestConfig } from 'axios';
-import type { LoginResponse } from './types';
+import type { LoginResponse, ReminderInput, ReminderPage, Reminder } from './types';
 import { tokenStore } from './tokenStore';
 
 const api = axios.create({
@@ -57,6 +57,15 @@ export const authApi = {
 };
 
 export const userApi = { me: () => api.get('/users/me') };
+
+export const reminderApi = {
+  list: (params: { page: number; size: number; completed?: boolean; category?: string; dueFrom?: string; dueTo?: string }) =>
+    api.get<ReminderPage>('/reminders', { params }),
+  create: (input: ReminderInput) => api.post<Reminder>('/reminders', input),
+  update: (id: string, input: ReminderInput) => api.put<Reminder>(`/reminders/${id}`, input),
+  setCompleted: (id: string, completed: boolean) => api.patch<Reminder>(`/reminders/${id}/completion`, { completed }),
+  delete: (id: string) => api.delete(`/reminders/${id}`),
+};
 
 export function getApiErrorMessage(error: unknown, fallback = 'Something went wrong. Please try again.') {
   if (axios.isAxiosError(error)) {
