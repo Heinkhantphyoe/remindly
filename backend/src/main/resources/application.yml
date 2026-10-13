@@ -31,3 +31,8 @@ security:
     secret: ${JWT_SECRET:remindly-local-development-secret-key-change-me}
     access-token-ttl-seconds: ${JWT_ACCESS_TOKEN_TTL_SECONDS:900}
 
+notifications:
+  scheduler:
+    fixed-rate-ms: ${NOTIFICATION_SCHEDULER_FIXED_RATE_MS:60000}
+  recovery-window-hours: ${NOTIFICATION_RECOVERY_WINDOW_HOURS:24}
+

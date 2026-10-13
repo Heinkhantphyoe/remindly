@@ -2,9 +2,9 @@
 
 Remindly is a production-style event reminder service built incrementally with a React frontend and Spring Boot backend.
 
-## Current progress: Step 4 — reminder domain and CRUD
+## Current progress: Step 5 — notification scheduling
 
-The project foundation, PostgreSQL schema, authentication, user profile endpoints, and reminder CRUD API are in place. Notification scheduling and the frontend reminder experience are planned for later steps.
+The project foundation, PostgreSQL schema, authentication, user profile endpoints, reminder CRUD API, and notification scheduler are in place. The notification API and frontend reminder experience are planned for later steps.
 
 ## Requirements
 
@@ -49,6 +49,8 @@ The list endpoint supports `completed`, `category`, `dueFrom`, `dueTo`, `page`, 
 ```text
 GET /api/reminders?completed=false&sort=dueAt,asc&page=0&size=20
 ```
+
+The notification scheduler runs once per minute by default. It creates due-time and optional advance notifications, skips completed reminders, recovers missed notifications from the previous 24 hours, and relies on the database uniqueness constraint to prevent duplicates. The interval and recovery window can be configured with `NOTIFICATION_SCHEDULER_FIXED_RATE_MS` and `NOTIFICATION_RECOVERY_WINDOW_HOURS`.
 
 ## Run the frontend
 

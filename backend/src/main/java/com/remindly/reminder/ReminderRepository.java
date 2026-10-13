@@ -8,11 +8,16 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.Instant;
 import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
 
 public interface ReminderRepository extends JpaRepository<Reminder, UUID> {
 
     Optional<Reminder> findByIdAndUserId(UUID id, UUID userId);
+
+    List<Reminder> findByCompletedFalseAndDueAtBetween(Instant dueFrom, Instant dueTo);
+
+    List<Reminder> findByCompletedFalseAndAdvanceOffsetMinutesIsNotNullAndDueAtAfter(Instant dueAt);
 
     @Query("""
             select r from Reminder r
