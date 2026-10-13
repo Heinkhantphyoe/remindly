@@ -1,0 +1,21 @@
+# Java / Maven
+backend/target/
+*.class
+
+# Node / Vite
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+
+# IDEs and OS files
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Local environment files
+.env
+!.env.example
+project-idea.txt
+
