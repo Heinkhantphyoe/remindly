@@ -109,3 +109,5 @@ docker compose config
 
 For deployment, set `DATABASE_URL`, `DATABASE_USERNAME`, `DATABASE_PASSWORD`, and `JWT_SECRET` through environment variables instead of using local development defaults.
 
+GitHub Actions runs the backend tests and package build, frontend production build, and Compose configuration validation for pushes and pull requests targeting `main`.
+
