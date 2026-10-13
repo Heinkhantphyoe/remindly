@@ -21,5 +21,12 @@ public class AuthExceptionHandler {
         problem.setTitle("Invalid timezone");
         return problem;
     }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    ProblemDetail handleInvalidCredentials(InvalidCredentialsException exception) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, exception.getMessage());
+        problem.setTitle("Authentication failed");
+        return problem;
+    }
 }
 

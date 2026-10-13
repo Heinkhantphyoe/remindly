@@ -28,6 +28,9 @@ class AuthControllerTest {
     @MockBean
     private RegistrationService registrationService;
 
+    @MockBean
+    private LoginService loginService;
+
     @Test
     void registersThroughPublicEndpoint() throws Exception {
         UserResponse response = new UserResponse(
@@ -67,6 +70,27 @@ class AuthControllerTest {
                                 }
                                 """))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void logsInThroughPublicEndpoint() throws Exception {
+        when(loginService.login(any(LoginRequest.class))).thenReturn(
+                new LoginResponse("access-token", 900, new UserResponse(
+                        UUID.randomUUID(), "user@example.com", "User", "UTC", Instant.now()
+                ))
+        );
+
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "email": "user@example.com",
+                                  "password": "password123"
+                                }
+                                """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.accessToken").value("access-token"))
+                .andExpect(jsonPath("$.expiresIn").value(900));
     }
 }
 
