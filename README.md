@@ -4,7 +4,7 @@ Remindly is a production-style event reminder service built incrementally with a
 
 ## Current progress: Step 10 — final verification and deployment preparation
 
-The project foundation, PostgreSQL schema, authentication, user profile endpoints, reminder CRUD API, notification scheduler, notification API, frontend reminder experience, and notification UI are in place. Production build checks and local deployment documentation are complete.
+The project foundation, PostgreSQL schema, authentication, user profile endpoints, reminder CRUD API, in-app and email notification delivery, frontend reminder experience, and notification UI are in place. Production build checks and local deployment documentation are complete.
 
 ## Requirements
 
@@ -50,7 +50,9 @@ The list endpoint supports `completed`, `category`, `dueFrom`, `dueTo`, `page`, 
 GET /api/reminders?completed=false&sort=dueAt,asc&page=0&size=20
 ```
 
-The notification scheduler runs once per minute by default. It creates due-time and optional advance notifications, skips completed reminders, recovers missed notifications from the previous 24 hours, and relies on the database uniqueness constraint to prevent duplicates. The interval and recovery window can be configured with `NOTIFICATION_SCHEDULER_FIXED_RATE_MS` and `NOTIFICATION_RECOVERY_WINDOW_HOURS`.
+The notification scheduler runs once per minute by default. It creates due-time and optional advance notifications, skips completed reminders, recovers missed notifications from the previous 24 hours, and relies on database uniqueness constraints to prevent duplicates. Each notification also creates one transactional email-outbox job. The interval and recovery window can be configured with `NOTIFICATION_SCHEDULER_FIXED_RATE_MS` and `NOTIFICATION_RECOVERY_WINDOW_HOURS`.
+
+Email delivery uses SMTP and runs through a separate durable outbox dispatcher. Configure `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_AUTH`, `SMTP_STARTTLS`, `EMAIL_FROM`, `EMAIL_FROM_NAME`, and `EMAIL_APP_URL`. Outbox behavior is configurable with `EMAIL_OUTBOX_FIXED_RATE_MS`, `EMAIL_OUTBOX_BATCH_SIZE`, `EMAIL_OUTBOX_MAX_ATTEMPTS`, `EMAIL_OUTBOX_INITIAL_BACKOFF_SECONDS`, `EMAIL_OUTBOX_MAX_BACKOFF_SECONDS`, and `EMAIL_OUTBOX_STALE_PROCESSING_MINUTES`. Both advance and due notifications are sent as plain-text and HTML email.
 
 Notification endpoints require a JWT access token:
 
@@ -79,7 +81,7 @@ The project can use the existing PostgreSQL installation on port `5432`. Create 
 docker compose up -d postgres
 ```
 
-Flyway applies database migrations automatically when the backend starts. The first migration creates the users, refresh tokens, reminders, and notifications tables.
+Flyway applies database migrations automatically when the backend starts. Migrations create the users, refresh tokens, reminders, notifications, and email outbox tables.
 
 If using the existing PostgreSQL installation, create the configured database and user before starting the backend. Alternatively, start the Compose database service with the command above.
 

@@ -37,7 +37,7 @@ input:focus { border-color: #5576e1; box-shadow: 0 0 0 4px rgba(85, 118, 225, .1
 .user-name { color: #68748a; font-size: .9rem; }
 .notification-wrap { position: relative; }
 .notification-button { position: relative; width: 34px; height: 34px; border: 0; border-radius: 9px; color: #53617a; background: #f3f6fb; }
-.bell-icon { font-size: 1.2rem; line-height: 1; }
+.bell-icon { display: block; width: 18px; height: 18px; margin: auto; }
 .unread-badge { position: absolute; top: -4px; right: -4px; min-width: 17px; padding: 2px 4px; border-radius: 100px; color: white; background: #d75d5d; font-size: .62rem; font-weight: 800; }
 .notification-panel { position: absolute; z-index: 5; top: 46px; right: 0; width: min(360px, calc(100vw - 2rem)); padding: 1rem; border: 1px solid #e1e7f0; border-radius: 14px; background: white; box-shadow: 0 18px 45px rgba(35, 54, 92, .16); }
 .notification-heading { display: flex; justify-content: space-between; align-items: start; gap: 1rem; padding: .35rem .35rem .85rem; border-bottom: 1px solid #edf0f5; }

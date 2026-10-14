@@ -22,10 +22,10 @@ public interface ReminderRepository extends JpaRepository<Reminder, UUID> {
     @Query("""
             select r from Reminder r
             where r.userId = :userId
-              and (:completed is null or r.completed = :completed)
-              and (:category is null or r.category = :category)
-              and (:dueFrom is null or r.dueAt >= :dueFrom)
-              and (:dueTo is null or r.dueAt <= :dueTo)
+              and coalesce(:completed, r.completed) = r.completed
+              and (coalesce(:category, '') = '' or r.category = :category)
+              and r.dueAt >= coalesce(:dueFrom, r.dueAt)
+              and r.dueAt <= coalesce(:dueTo, r.dueAt)
             """)
     Page<Reminder> search(
             @Param("userId") UUID userId,

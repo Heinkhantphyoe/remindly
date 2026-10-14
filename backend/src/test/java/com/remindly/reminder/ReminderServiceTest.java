@@ -57,6 +57,18 @@ class ReminderServiceTest {
     }
 
     @Test
+    void searchesWithOptionalFiltersOmitted() {
+        UUID userId = UUID.randomUUID();
+        PageRequest pageRequest = PageRequest.of(0, 20);
+        when(reminderRepository.search(userId, null, null, null, null, pageRequest))
+                .thenReturn(new PageImpl<>(List.of()));
+
+        new ReminderService(reminderRepository).search(userId, null, null, null, null, pageRequest);
+
+        verify(reminderRepository).search(userId, null, null, null, null, pageRequest);
+    }
+
+    @Test
     void rejectsInvalidDateRange() {
         Instant dueFrom = Instant.parse("2026-10-21T00:00:00Z");
         Instant dueTo = Instant.parse("2026-10-20T00:00:00Z");
