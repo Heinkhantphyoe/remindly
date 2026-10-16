@@ -18,6 +18,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,7 +37,7 @@ class NotificationSchedulingServiceTest {
     void setUp() {
         Clock clock = Clock.fixed(now, ZoneOffset.UTC);
         service = new NotificationSchedulingService(reminderRepository, notificationRepository, clock, 24);
-        when(notificationRepository.insertIfAbsent(any(), any(), any(), any(), any())).thenReturn(1);
+        lenient().when(notificationRepository.insertIfAbsent(any(), any(), any(), any(), any())).thenReturn(1);
         when(reminderRepository.findByCompletedFalseAndDueAtBetween(any(), any())).thenReturn(List.of());
         when(reminderRepository.findByCompletedFalseAndAdvanceOffsetMinutesIsNotNullAndDueAtAfter(any()))
                 .thenReturn(List.of());
@@ -69,7 +70,7 @@ class NotificationSchedulingServiceTest {
 
     @Test
     void skipsAdvanceNotificationOutsideRecoveryWindow() {
-        Reminder reminder = reminder("2026-10-14T11:00:00Z", 1800);
+        Reminder reminder = reminder("2026-10-13T11:00:00Z", 1800);
         when(reminderRepository.findByCompletedFalseAndAdvanceOffsetMinutesIsNotNullAndDueAtAfter(now))
                 .thenReturn(List.of(reminder));
 

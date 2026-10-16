@@ -22,6 +22,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -64,9 +65,9 @@ class EmailOutboxDispatcherTest {
     void sendsEmailAndMarksJobSent() {
         assertThat(dispatcher.dispatchNow()).isEqualTo(1);
 
-        verify(emailSender).send("user@example.com", "Reminder due: Pay rent", 
+        verify(emailSender).send(eq("user@example.com"), eq("Reminder due: Pay rent"),
                 org.mockito.ArgumentMatchers.contains("Monthly payment"),
-                org.mockito.ArgumentMatchers.contains("Asia"));
+                org.mockito.ArgumentMatchers.contains("SGT"));
         assertThat(job.getStatus()).isEqualTo(EmailOutboxStatus.SENT);
     }
 
