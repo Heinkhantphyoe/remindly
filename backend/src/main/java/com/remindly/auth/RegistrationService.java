@@ -15,10 +15,17 @@ public class RegistrationService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailVerificationService emailVerificationService;
 
     public RegistrationService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this(userRepository, passwordEncoder, null);
+    }
+
+    @org.springframework.beans.factory.annotation.Autowired
+    public RegistrationService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailVerificationService emailVerificationService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailVerificationService = emailVerificationService;
     }
 
     @Transactional
@@ -37,11 +44,14 @@ public class RegistrationService {
                 email,
                 passwordEncoder.encode(request.password()),
                 displayName,
-                timezone
+                timezone,
+                false
         );
 
         try {
-            return UserResponse.from(userRepository.save(user));
+            User saved = userRepository.save(user);
+            if (emailVerificationService != null) emailVerificationService.issue(saved);
+            return UserResponse.from(saved);
         } catch (DataIntegrityViolationException exception) {
             throw new EmailAlreadyUsedException();
         }

@@ -29,6 +29,8 @@ input:focus { border-color: #5576e1; box-shadow: 0 0 0 4px rgba(85, 118, 225, .1
 .button-quiet { color: #53617a; background: #eef2f8; }
 .form-footer { margin: .2rem 0 0; text-align: center; color: #788397; font-size: .9rem; }
 .form-message { margin: 0; padding: .75rem .9rem; border-radius: 9px; color: #a33838; background: #fff0f0; font-size: .88rem; }
+.success-message { margin: 0; padding: .75rem .9rem; border-radius: 9px; color: #26734d; background: #ecfaf2; font-size: .88rem; }
+.password-help { margin-top: -.7rem; text-align: right; font-size: .8rem; }
 .app-frame { min-height: 100vh; }
 .topbar { display: flex; justify-content: space-between; align-items: center; padding: 1.1rem clamp(1.25rem, 5vw, 5rem); background: white; border-bottom: 1px solid #e7ebf2; }
 .brand-mark { display: inline-grid; place-items: center; width: 30px; height: 30px; margin-right: .55rem; border-radius: 9px; color: white; background: #3159d8; font-weight: 850; }

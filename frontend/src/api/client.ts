@@ -56,6 +56,9 @@ export const authApi = {
   login: (request: { email: string; password: string }) => api.post<LoginResponse>('/auth/login', request),
   register: (request: { email: string; password: string; displayName: string; timezone: string }) => api.post('/auth/register', request),
   logout: (refreshToken: string) => api.post('/auth/logout', { refreshToken }),
+  verifyEmail: (token: string) => api.post('/auth/verify-email', { token }),
+  requestPasswordReset: (email: string) => api.post('/auth/request-password-reset', { email }),
+  resetPassword: (token: string, password: string) => api.post('/auth/reset-password', { token, password }),
 };
 
 export const userApi = { me: () => api.get('/users/me') };

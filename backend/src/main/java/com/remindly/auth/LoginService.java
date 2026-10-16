@@ -36,6 +36,10 @@ public class LoginService {
             throw new InvalidCredentialsException();
         }
 
+        if (!user.isEmailVerified()) {
+            throw new InvalidCredentialsException();
+        }
+
         return createLoginResponse(user, refreshTokenService.issue(user).rawToken());
     }
 

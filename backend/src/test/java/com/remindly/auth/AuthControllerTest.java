@@ -33,6 +33,12 @@ class AuthControllerTest {
     private LoginService loginService;
 
     @MockBean
+    private EmailVerificationService emailVerificationService;
+
+    @MockBean
+    private PasswordResetService passwordResetService;
+
+    @MockBean
     private JwtTokenService jwtTokenService;
 
     @Test

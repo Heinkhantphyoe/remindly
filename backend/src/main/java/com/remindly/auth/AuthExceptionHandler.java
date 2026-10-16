@@ -40,6 +40,13 @@ public class AuthExceptionHandler {
         return problem;
     }
 
+    @ExceptionHandler(InvalidAuthTokenException.class)
+    ProblemDetail handleInvalidAuthToken(InvalidAuthTokenException exception) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
+        problem.setTitle("Invalid or expired link");
+        return problem;
+    }
+
     @ExceptionHandler(UserNotFoundException.class)
     ProblemDetail handleUserNotFound(UserNotFoundException exception) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, exception.getMessage());

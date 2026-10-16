@@ -14,10 +14,15 @@ public class AuthController {
 
     private final RegistrationService registrationService;
     private final LoginService loginService;
+    private final EmailVerificationService emailVerificationService;
+    private final PasswordResetService passwordResetService;
 
-    public AuthController(RegistrationService registrationService, LoginService loginService) {
+    public AuthController(RegistrationService registrationService, LoginService loginService,
+                          EmailVerificationService emailVerificationService, PasswordResetService passwordResetService) {
         this.registrationService = registrationService;
         this.loginService = loginService;
+        this.emailVerificationService = emailVerificationService;
+        this.passwordResetService = passwordResetService;
     }
 
     @PostMapping("/register")
@@ -38,6 +43,24 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@Valid @RequestBody RefreshTokenRequest request) {
         loginService.logout(request);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/verify-email")
+    public ResponseEntity<Void> verifyEmail(@Valid @RequestBody VerifyEmailRequest request) {
+        emailVerificationService.verify(request.token());
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/request-password-reset")
+    public ResponseEntity<Void> requestPasswordReset(@Valid @RequestBody RequestPasswordResetRequest request) {
+        passwordResetService.request(request.email());
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<Void> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        passwordResetService.reset(request.token(), request.password());
         return ResponseEntity.noContent().build();
     }
 }
